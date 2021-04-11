@@ -59,7 +59,7 @@ class StatusController extends Controller
                         <button
                           type="button"
                             id="' . $data->id . '"
-                            onclick=editStatus(' .  $data . ')
+                            onclick=editStatus(' .   $data->id . ')
                           class="edit btn btn-warning btn-sm"
                           data-placement="top"
                           title="Status Edit"
@@ -70,7 +70,7 @@ class StatusController extends Controller
                         <button
                           type="button"
                           id="' . $data->id . '"
-                            onclick=deleteStatus(' .  $data . ')
+                            onclick=deleteStatus(' .   $data->id . ')
                           class="btn btn-danger btn-sm"
                           data-placement="top"
                           title="Status Delete"

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -41,7 +44,7 @@ class CategoryController extends Controller
                         <button
                           type="button"
                             id="' . $data->id . '"
-                            onclick=editCategory(' .  $data . ')
+                            onclick=editCategory(' .   $data->id . ')
                           class="edit btn btn-warning btn-sm"
                           data-placement="top"
                           title="Category Edit"
@@ -52,7 +55,7 @@ class CategoryController extends Controller
                         <button
                           type="button"
                           id="' . $data->id . '"
-                            onclick=deleteCategory(' .  $data . ')
+                            onclick=deleteCategory(' .   $data->id . ')
                           class="btn btn-danger btn-sm"
                           data-placement="top"
                           title="Category Delete"
@@ -86,7 +89,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
+        $validator =  Validator::make($request->all(), [
+            'category_name' => ['required', 'unique:categories,name,type' . $request->type],
+            'type' => ['required',],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $category = new Category;
+        $category->name = $request->category_name;
+        $category->type = $request->type;
+        $category->staff_id = $user->id;
+
+        $category->save();
+
+        return ['success' => 'The category has been successfull Saved'];
     }
 
     /**
@@ -108,7 +128,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category =  Category::findOrFail($id);
+        return $category;
     }
 
     /**
@@ -120,7 +141,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category =  Category::findOrFail($id);
+        $user = auth()->user();
+        $validator =  Validator::make($request->all(), [
+            'category_name' => ['required', 'unique:categories,name,type' . $request->type],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $category->name = $request->category_name;
+        $category->type = $request->type;
+        $category->staff_id = $user->id;
+
+        $category->save();
+
+        return ['success' => 'The category has been successfull updated'];
     }
 
     /**
@@ -131,6 +168,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category =  Category::findOrFail($id);
+        $category->delete();
+        return ['success' => 'The category has been successfull Deleted'];
     }
 }

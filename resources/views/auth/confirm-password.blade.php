@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-auth-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -17,7 +17,8 @@
 
                 <div>
                     <x-jet-label for="password" value="{{ __('Password') }}" />
-                    <x-jet-input id="password" type="password" name="password" required autocomplete="current-password" autofocus />
+                    <x-jet-input id="password" type="password" name="password" required autocomplete="current-password"
+                        autofocus />
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
@@ -28,4 +29,4 @@
             </form>
         </div>
     </x-jet-authentication-card>
-</x-guest-layout>
+</x-auth-layout>
