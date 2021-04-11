@@ -26,7 +26,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
+        'user_code ', 'country_id ', 'is_active',
+        'is_staff', 'is_superuser', 'is_investor',
+        'is_candidate', 'is_entrepreneur', 'password',
+        'birth_date', 'place_birth', 'mobile',
+        'active_status', 'dark_mode', 'messenger_color',
+        'last_login_time', 'last_login_ip', 'last_login_device',
+        'last_login_agent'
     ];
 
     /**
@@ -58,4 +65,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return ucwords($this->first_name) . ' ' . ucwords($this->last_name);
+    }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\SEO;
+use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
-use NascentAfrica\Jetstrap\JetstrapFacade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use NascentAfrica\Jetstrap\JetstrapFacade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,8 +33,9 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         JetstrapFacade::useAdminLte3();
 
-        // $setting = Setting::get()->first();
+        $setting = Setting::get()->first();
+        $seo = SEO::get()->first();
 
-        // View::share('setting', $setting);
+        View::share(['setting', $setting, 'seo', $seo]);
     }
 }
