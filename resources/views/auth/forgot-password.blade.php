@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-auth-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -11,9 +11,9 @@
             </div>
 
             @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
             @endif
 
             <x-jet-validation-errors class="mb-3" />
@@ -34,4 +34,4 @@
             </form>
         </div>
     </x-jet-authentication-card>
-</x-guest-layout>
+</x-auth-layout>
