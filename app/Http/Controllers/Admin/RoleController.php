@@ -24,14 +24,26 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('admin.preference.role');
+        $permissions = Permission::all()->pluck('name', 'id');
+        return view('admin.roles.index', compact('permissions'));
     }
 
-    public function role()
+    public function roles()
     {
         $data = role::query();
         return DataTables::eloquent($data)
 
+            ->addColumn('permissions', function ($data) {
+
+                $permissions = '';
+                foreach ($data->permissions as $key => $item) {
+                    $permissions .= '<span class="badge badge-info p-1">' . $item->name . '</span> &nbsp;';
+                }
+
+
+
+                return $permissions;
+            })
             ->editColumn('created_at', function ($data) {
 
                 return $data->created_at->diffForHumans();
@@ -55,21 +67,21 @@ class RoleController extends Controller
                         >
                           <i class="fa fa-eye red"></i>
                         </button>
-                        <button
+                        <a
                           type="button"
                             id="' . $data->id . '"
-                            onclick=editRole(' .  $data->id . ')
+                            href="' . route("admin.roles.edit", $data->id) . '"
                           class="edit btn btn-warning btn-sm"
                           data-placement="top"
                           title="Role Edit"
                           data-toggle="tooltip modal"
                         >
                           <i class="fa fa-edit blue"></i>
-                        </button>
+                        </a>
                         <button
                           type="button"
                           id="' . $data->id . '"
-                            onclick=deleteRole(' .  $data->id . ')
+                            onclick=deleteRole(' .  $data->id . ',"' . $data->name . '")
                           class="btn btn-danger btn-sm"
                           data-placement="top"
                           title="Role Delete"
@@ -82,7 +94,7 @@ class RoleController extends Controller
                 return $button;
             })
 
-            ->rawColumns(['status', 'actions'])
+            ->rawColumns(['status', 'actions', 'permissions'])
             ->make(true);
     }
 
@@ -149,11 +161,11 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role =  Role::findOrFail($id);
-        $permissions = Permission::all()->pluck('title', 'id');
+        $permissions = Permission::all()->pluck('name', 'id');
 
         $role->load('permissions');
 
-        return ['permissions' => $permissions, 'role' => $role];
+        return  view('admin.roles.edit', compact('permissions', 'role'));
     }
 
     /**
@@ -187,7 +199,10 @@ class RoleController extends Controller
         $role->update();
         $role->permissions()->sync($request->input('permissions', []));
 
-        return ['success' => 'The role has been successfull Saved'];
+        return redirect()->route('admin.roles.index')->with([
+            'alert-type' => 'success',
+            'message' => 'The role has been successfull Updated'
+        ]);
     }
 
     /**

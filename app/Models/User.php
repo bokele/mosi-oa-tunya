@@ -74,4 +74,14 @@ class User extends Authenticatable
     {
         return ucwords($this->first_name) . ' ' . ucwords($this->last_name);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
