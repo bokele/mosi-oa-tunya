@@ -29,6 +29,10 @@
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/dashboard.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed font-sans antialiased">
@@ -134,6 +138,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
 
+
     <script>
         $.ajaxSetup({
                     headers: {
@@ -142,8 +147,14 @@
                 });
 
                 $(document).ready(function() {
-                $('#summernote').summernote();
-                $('#description').summernote();
+                    $('#summernote').summernote();
+                    $('#description').summernote();
+                    $('.select2').select2({
+                    theme: 'bootstrap4'
+                    });
+                    $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                    });
                 });
     </script>
     @stack('modals')
@@ -151,7 +162,52 @@
 
     @stack('scripts')
 
+    <script type='text/javascript'>
+        @if (Session::has('message'))
 
+
+                let type = "{{ Session::get('alert-type', 'info')}}";
+                    switch (type) {
+                        case 'success':
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: "{{ Session::get('message')}}",
+                                showConfirmButton: false,
+                                toast: true,
+                                timer: 6000
+                            });
+                            break;
+
+                        case 'error':
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "{{ Session::get('message')}}"
+                            })
+
+                            break;
+
+                            case 'info':
+                            Swal.fire({
+                            icon: 'info',
+                            title: 'Information...',
+                            text: "{{ Session::get('message') }} "
+                            })
+
+                            break;
+                            case 'warning':
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning...',
+                            text: "{{ Session::get('message') }}"
+
+                         });
+                         break;
+                        }
+                @endif
+
+    </script>
 </body>
 
 </html>
