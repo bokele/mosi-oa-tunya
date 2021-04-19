@@ -22,9 +22,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('admin.preference.permission');
+        return view('admin.permissions.index');
     }
-    public function permission()
+    public function permissions()
     {
         $data = Permission::query();
         return DataTables::eloquent($data)
@@ -45,7 +45,7 @@ class PermissionController extends Controller
                           type="button"
                             id="' . $data->id . '"
                             onclick=ShowPermission(' .  $data->id . ')
-                          class="edit btn btn-warning btn-sm"
+                          class="edit btn btn-info btn-sm"
                           data-placement="top"
                           title="Permission View"
                           data-toggle="tooltip modal"
@@ -66,7 +66,7 @@ class PermissionController extends Controller
                         <button
                           type="button"
                           id="' . $data->id . '"
-                            onclick=deletePermission(' . $data->id . ')
+                            onclick=deletePermission(' . $data->id . ',"' . $data->name . '")
                           class="btn btn-danger btn-sm"
                           data-placement="top"
                           title="permission Delete"
@@ -82,7 +82,12 @@ class PermissionController extends Controller
             ->make(true);
     }
 
+    public function create()
+    {
+        // abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        return view('admin.permissions.create');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -93,7 +98,7 @@ class PermissionController extends Controller
     {
         $user = auth()->user();
         $validator =  Validator::make($request->all(), [
-            'permission_name' => ['required', 'unique:permission,name'],
+            'permission_name' => ['required', 'unique:permissions,name'],
         ]);
 
         if ($validator->fails()) {
@@ -107,6 +112,8 @@ class PermissionController extends Controller
 
         return ['success' => 'The permission has been successfull Saved'];
     }
+
+
 
     /**
      * Display the specified resource.
@@ -143,9 +150,11 @@ class PermissionController extends Controller
     {
         $permission =  Permission::findOrFail($id);
         $user = auth()->user();
+
         $validator =  Validator::make($request->all(), [
             'permission_name' => ['required', 'unique:permissions,name,' . $permission->id],
         ]);
+
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
