@@ -1,10 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Staff\TaskController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\GoogleAccountController;
+use App\Http\Controllers\Staff\ActivityController;
 use App\Http\Controllers\Admin\PermissionController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +30,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+
+
+
+
 Route::middleware(['auth:sanctum', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     //APP SETTING  LINKS
     Route::get('/setting', [SettingController::class, 'index'])->name('setting');
@@ -36,16 +46,19 @@ Route::middleware(['auth:sanctum', 'verified', 'admin'])->prefix('admin')->name(
     Route::post('/setting/social-media/store', [SettingController::class, 'storeSocialMedia'])->name('setting.socila.media.store');
     Route::post('/setting/social-media/update/{id}', [SettingController::class, 'storeSocialMedia'])->name('setting.socila.media.update');
 
-
+    //preference
+    Route::get('/category/all', [CategoryController::class, 'category'])->name('get.categorty');
+    Route::resource('categories', CategoryController::class);
     // Permission management
-    Route::resource('permissions', PermissionController::class);
+
     Route::get('/get/permissions/all', [PermissionController::class, 'permissions'])->name('get.all.permissions');
+    Route::resource('permissions', PermissionController::class);
     // Permission management
     Route::resource('roles', RoleController::class);
     Route::get('/get/roles/all', [RoleController::class, 'roles'])->name('get.all.roles');
 
     // user management
-    Route::resource('users', UserController::class);
+
     Route::get('/all-users', [UserController::class, 'index'])->name('all.users');
     Route::get('/users/staff', [UserController::class, 'index'])->name('all.staff');
     Route::get('/users/investor', [UserController::class, 'index'])->name('all.investor');
@@ -64,4 +77,16 @@ Route::middleware(['auth:sanctum', 'verified', 'admin'])->prefix('admin')->name(
     Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::post('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::post('/user/delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
+    Route::resource('users', UserController::class);
+
+
+    //activity
+    Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
+    Route::get('/activity/lists', [ActivityController::class, 'activities'])->name('activity.lists');
+    Route::resource('activity', ActivityController::class);
+
+    Route::resource('tasks', TaskController::class);
+
+    Route::get('/diary/list', [DiaryController::class, 'diary'])->name('diary.list');
+    Route::resource('diaries', DiaryController::class);
 });

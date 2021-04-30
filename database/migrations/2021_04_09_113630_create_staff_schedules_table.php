@@ -18,10 +18,10 @@ class CreateStaffSchedulesTable extends Migration
             $table->foreignId('staff_id')->constrained();
             $table->date('schedule_date');
             $table->enum('schedule_day', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
-            $table->string('schedule_start_time');
-            $table->string('schedule_end_time');
+            $table->string('started_time');
+            $table->string('ended_time');
             $table->unsignedInteger('average_consulting_time');
-            $table->enum('schedule_status', ['active', 'inactive']);
+            $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });
     }

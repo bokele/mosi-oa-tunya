@@ -19,9 +19,10 @@ class CreateTasksTable extends Migration
             $table->foreignId('status_id')->nullable()->constrained();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->datetime('start_task_date');
-            $table->datetime('end_task_date');
+            $table->datetime('started_date');
+            $table->datetime('ended_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

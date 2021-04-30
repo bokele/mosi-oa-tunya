@@ -22,9 +22,9 @@ class CreateActivitiesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->longText('description');
-            $table->date('started_at');
-            $table->date('ended_at');
-            $table->time('duration')->nullable();
+            $table->date('started_date');
+            $table->date('ended_date');
+            $table->time('flag')->nullable()->comment('allday,monthly,weekly,yearly');
             $table->string('support_activite_file')->nullable();
             $table->timestamps();
             $table->softDeletes();

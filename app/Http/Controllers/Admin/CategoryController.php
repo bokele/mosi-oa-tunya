@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware(['auth', 'admin']);
-    }
+
 
     /**
      * Display a listing of the resource.
@@ -91,8 +88,8 @@ class CategoryController extends Controller
     {
         $user = auth()->user();
         $validator =  Validator::make($request->all(), [
-            'category_name' => ['required', 'unique:categories,name,type' . $request->type],
-            'type' => ['required',],
+            'category_name' => ['required', 'unique:categories,name,type' . $request->category_type],
+            'category_type' => ['required',],
         ]);
 
         if ($validator->fails()) {
@@ -101,7 +98,7 @@ class CategoryController extends Controller
 
         $category = new Category;
         $category->name = $request->category_name;
-        $category->type = $request->type;
+        $category->type = $request->category_type;
         $category->staff_id = $user->id;
 
         $category->save();
@@ -126,9 +123,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $category =  Category::findOrFail($id);
+
         return $category;
     }
 
@@ -144,7 +141,8 @@ class CategoryController extends Controller
         $category =  Category::findOrFail($id);
         $user = auth()->user();
         $validator =  Validator::make($request->all(), [
-            'category_name' => ['required', 'unique:categories,name,type' . $request->type],
+            'category_name' => ['required', 'unique:categories,name,type' . $request->category_type],
+            'category_type' => ['required',],
         ]);
 
         if ($validator->fails()) {
@@ -152,7 +150,7 @@ class CategoryController extends Controller
         }
 
         $category->name = $request->category_name;
-        $category->type = $request->type;
+        $category->type = $request->category_type;
         $category->staff_id = $user->id;
 
         $category->save();

@@ -18,6 +18,7 @@ class CreatePermissionsTable extends Migration
             $table->foreignId('staff_id')->constrained();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

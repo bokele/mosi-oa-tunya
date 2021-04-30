@@ -15,6 +15,7 @@ class CreateDiariesTable extends Migration
     {
         Schema::create('diaries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
             $table->string('diary_code')->unique();
             $table->string('title');
             $table->text('content');

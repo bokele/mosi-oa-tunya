@@ -20,8 +20,8 @@ class CreateBookingsTable extends Migration
             $table->foreignId('activity_id')->nullable()->constrained();
             $table->foreignId('status_id')->nullable()->constrained();
             $table->string('booking_code')->unique();
-            $table->datetime('start_time');
-            $table->datetime('end_time');
+            $table->datetime('started_time');
+            $table->datetime('ended_time');
             $table->longText('user_comment')->nullable();
             $table->longText('staff_comment')->nullable();
             $table->longText('admin_comment')->nullable();
