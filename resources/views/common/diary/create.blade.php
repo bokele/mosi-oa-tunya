@@ -14,7 +14,7 @@
                 <li class="breadcrumb-item">
                     <a href="/home">{{_("Home") }}</a>
                 </li>
-                <li class="breadcrumb-item active"><a href="{{route('admin.diaries.index')}}">{{_("Diary") }}</a> </li>
+                <li class="breadcrumb-item active"><a href="{{route('diary')}}">{{_("Diary") }}</a> </li>
                 <li class="breadcrumb-item active">{{_("Craete")}}</li>
             </ol>
         </div>
@@ -27,7 +27,7 @@
 
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ route('admin.diaries.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('diary.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">

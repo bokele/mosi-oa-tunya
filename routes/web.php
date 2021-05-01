@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\Admin\RoleController;
@@ -8,8 +7,12 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Staff\TaskController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\GoogleAccountController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Staff\ActivityController;
+use App\Http\Controllers\Staff\DealBookController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Staff\BookingController;
+use App\Http\Controllers\Website\CommonDealBookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +32,15 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
-
+Route::get('/deal-book/{slug}', [CommonDealBookController::class, 'show'])->name('common.dealbook.show');
 
 
 
 Route::middleware(['auth:sanctum', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     //APP SETTING  LINKS
+
+    Route::get('/dashboard', [SettingController::class, 'index'])->name('dashboard');
+
     Route::get('/setting', [SettingController::class, 'index'])->name('setting');
     Route::post('/setting/store', [SettingController::class, 'storeSetting'])->name('setting.store');
     Route::post('/setting/update/{id}', [SettingController::class, 'storeSetting'])->name('setting.update');
@@ -89,4 +94,12 @@ Route::middleware(['auth:sanctum', 'verified', 'admin'])->prefix('admin')->name(
 
     Route::get('/diary/list', [DiaryController::class, 'diary'])->name('diary.list');
     Route::resource('diaries', DiaryController::class);
+
+    Route::get('/dealbooks/list', [DealBookController::class, 'dealbook'])->name('dealbooks.list');
+    Route::resource('dealbooks', DealBookController::class);
+
+
+    Route::get('/bookings/list', [BookingController::class, 'booking'])->name('bookings.list');
+    Route::post('/bookings/cancel/{id}', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::resource('bookings', BookingController::class);
 });

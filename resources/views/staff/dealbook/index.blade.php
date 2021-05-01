@@ -1,12 +1,12 @@
 <x-app-layout>
     @section('page-title')
-    Diary |
+    DealBook |
     @endsection
     <x-slot name="header">
 
 
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">{{ __('Diary') }}</h1>
+            <h1 class="m-0 text-dark font-weight-bold">{{ __(' DealBook') }}</h1>
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
@@ -14,7 +14,7 @@
                 <li class="breadcrumb-item">
                     <a href="/home">{{_("Home") }}</a>
                 </li>
-                <li class="breadcrumb-item active">{{_("Diary")}}</li>
+                <li class="breadcrumb-item active">{{_(" DealBook")}}</li>
             </ol>
         </div>
         <!-- /.col -->
@@ -25,13 +25,13 @@
                 <div class="card card-blue">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <span class="fa fa-list"></span> {{_("Diary List")}}
+                            <span class="fa fa-list"></span> {{_(" DealBook List")}}
                         </h3>
 
                         <div class="card-tools">
-                            <a href="{{ route('diary.create')}} " class="btn btn-dark">
+                            <a href="{{ route('admin.dealbooks.create')}} " class="btn btn-dark">
                                 <i class="fas fa-plus fa-lg"></i> &nbsp;
-                                {{_(" Add New Note")}}
+                                {{_(" Add New  DealBook")}}
                             </a>
                         </div>
                     </div>
@@ -44,10 +44,18 @@
                                     <tr>
                                         <th scope="col">{{_("Actions")}}</th>
                                         <th scope="col">{{_("Code")}}</th>
+                                        <th scope="col">{{_("Category")}}</th>
+                                        <th scope="col">{{_("Author")}}</th>
                                         <th scope="col">{{_("Title")}}</th>
+                                        <th scope="col">{{_("Link")}}</th>
+                                        <th scope="col">{{_("Video link")}}</th>
+                                        <th scope="col">{{_("published By")}}</th>
+                                        <th scope="col">{{_("Published at")}}</th>
                                         <th scope="col">{{_("Created at")}}</th>
                                         <th scope="col">{{_("Updated at")}}</th>
+                                        <th scope="col">{{_("Staff")}}</th>
                                     </tr>
+
                                 </thead>
                             </table>
                         </div>
@@ -64,28 +72,30 @@
     $('#myTable').DataTable({
         processing: true,
         serverside:true,
-        ajax: '{!! route("diary.list") !!}',
+        ajax: '{!! route("admin.dealbooks.list") !!}',
         columns:[
             {data: 'actions', name: 'actions', orderable: false, searchable: false},
-            {data: 'diary_code', name: 'diary_code'},
-            {data: 'title', name: 'title'},
+            {data: 'dealbook_code', name: ' dealbook_code'},
+            {data: 'category', name: ' category'},
+            {data: 'author', name: ' author'},
+            {data: 'title', name: ' title'},
+            {data: 'slug', name: ' slug'},
+            {data: 'video_link', name: ' video_link'},
+
+            {data: 'published', name: ' published'},
+            {data: 'published_at', name: ' published_at'},
             {data: 'created_at',  name: 'created_at'},
-            {data:'updated_at', name: 'updated_at'}
+            {data:'updated_at', name: 'updated_at'},
+            {data: 'staff', name: ' staff'},
     ]
     });
-
-
-
-
-
-
 });
 
 
-function deleteDiary(id, code){
+function deleteDealBook(id, title){
 Swal.fire({
 title: 'Are you sure?',
-html: "You won't be able to revert this!<br /> <span class='text-danger'><b>Delete Diary : "+code+"</b></span>",
+html: "You won't be able to revert this!<br /> <span class='text-danger'><b>Delete  DealBook : "+title+"</b></span>",
 icon: 'warning',
 showCancelButton: true,
 confirmButtonColor: '#3085d6',
@@ -94,8 +104,8 @@ confirmButtonText: 'Yes, delete it!'
 }).then((result) => {
 if (result.isConfirmed) {
 $.ajax({
-url: "/diary/delete/" + id,
-method:'POST',
+url: "/admin/dealbooks/" + id,
+method:'DELETE',
 dataType:"json",
 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 success:function(data)

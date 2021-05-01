@@ -14,7 +14,7 @@
                 <li class="breadcrumb-item">
                     <a href="/home">{{_("Home") }}</a>
                 </li>
-                <li class="breadcrumb-item active"><a href="{{route('admin.diaries.index')}}">{{_("Diary") }}</a> </li>
+                <li class="breadcrumb-item active"><a href="{{route('diary')}}">{{_("Diary") }}</a> </li>
                 <li class="breadcrumb-item active">{{_("Edit")}}</li>
             </ol>
         </div>
@@ -27,9 +27,8 @@
 
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ route('admin.diaries.update', $diary->id) }}" method="POST">
+                        <form action="{{ route('diary.update', $diary->id) }}" method="POST">
                             @csrf
-                            @method('PUT')
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -53,13 +52,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="summernote">{{ __('content') }}</label>
+                                        <div class="input-group">
 
 
-
-                                        <textarea name="content" id="summernote" placeholder="{{ __('content') }}"
-                                            class="form-control {{ $errors->has('content') ? 'is-invalid' : ''
-                                                }} ">{{ $diary->content}}</textarea>
-
+                                            <textarea name="content" id="summernote" placeholder="{{ __('content') }}"
+                                                class="form-control {{ $errors->has('content') ? 'is-invalid' : ''
+                                                }} " value="{{ $diary->content}}"></textarea>
+                                        </div>
                                         <span class="invalid-feedback d-block" role="alert">
                                             @error('content')<strong> <span class="error">{{ $message }}</span></strong>
                                             @enderror

@@ -34,6 +34,9 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed font-sans antialiased">
@@ -147,6 +150,7 @@
 
                 $(document).ready(function() {
                     $('#summernote').summernote();
+                    $('#staff_comment').summernote();
                     $('#description').summernote();
                     $('.select2').select2({
                     theme: 'bootstrap4'

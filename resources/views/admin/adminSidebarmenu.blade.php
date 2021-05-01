@@ -83,6 +83,15 @@
     </ul>
 
 </li>
+<li class="nav-item">
+    <a href="{{ route('admin.dealbooks.index')}}" class="nav-link">
+        <i class="nav-icon fas fa-clipboard"></i>
+        <p>
+            DealBook
+
+        </p>
+    </a>
+</li>
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-users"></i>
@@ -112,5 +121,11 @@
     <a href="{{ route("admin.diaries.index") }}" class="nav-link">
         <i class="fa fa-clipboard nav-icon"></i>
         <p>Diary</p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route("admin.bookings.index") }}" class="nav-link">
+        <i class="fa fa-clipboard nav-icon"></i>
+        <p>Appointment</p>
     </a>
 </li>

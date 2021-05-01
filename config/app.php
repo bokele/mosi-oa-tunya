@@ -179,6 +179,8 @@ return [
 
         Yajra\DataTables\DataTablesServiceProvider::class,
         Laravolt\Avatar\ServiceProvider::class,
+
+        'Cohensive\Embed\EmbedServiceProvider',
     ],
 
     /*
@@ -233,6 +235,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Avatar'    => Laravolt\Avatar\Facade::class,
+        'Embed' => Cohensive\Embed\Facades\Embed::class,
+
 
     ],
 

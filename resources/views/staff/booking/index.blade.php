@@ -1,12 +1,12 @@
 <x-app-layout>
     @section('page-title')
-    Diary |
+    Booking | Appointment |
     @endsection
     <x-slot name="header">
 
 
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark font-weight-bold">{{ __('Diary') }}</h1>
+            <h1 class="m-0 text-dark font-weight-bold">{{ __('Booking') }}</h1>
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
@@ -14,7 +14,7 @@
                 <li class="breadcrumb-item">
                     <a href="/home">{{_("Home") }}</a>
                 </li>
-                <li class="breadcrumb-item active">{{_("Diary")}}</li>
+                <li class="breadcrumb-item active">{{_("Booking")}}</li>
             </ol>
         </div>
         <!-- /.col -->
@@ -25,13 +25,13 @@
                 <div class="card card-blue">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <span class="fa fa-list"></span> {{_("Diary List")}}
+                            <span class="fa fa-list"></span> {{_(" Booking List")}}
                         </h3>
 
                         <div class="card-tools">
-                            <a href="{{ route('diary.create')}} " class="btn btn-dark">
+                            <a href="{{ route('admin.bookings.create')}} " class="btn btn-dark">
                                 <i class="fas fa-plus fa-lg"></i> &nbsp;
-                                {{_(" Add New Note")}}
+                                {{_(" Add New  Booking | Appointment")}}
                             </a>
                         </div>
                     </div>
@@ -44,10 +44,16 @@
                                     <tr>
                                         <th scope="col">{{_("Actions")}}</th>
                                         <th scope="col">{{_("Code")}}</th>
-                                        <th scope="col">{{_("Title")}}</th>
+                                        <th scope="col">{{_("Satus")}}</th>
+                                        <th scope="col">{{_("User")}}</th>
+                                        <th scope="col">{{_("Staff")}}</th>
+                                        <th scope="col">{{_("Started time")}}</th>
+                                        <th scope="col">{{_("Ended time")}}</th>
                                         <th scope="col">{{_("Created at")}}</th>
                                         <th scope="col">{{_("Updated at")}}</th>
+
                                     </tr>
+
                                 </thead>
                             </table>
                         </div>
@@ -64,28 +70,27 @@
     $('#myTable').DataTable({
         processing: true,
         serverside:true,
-        ajax: '{!! route("diary.list") !!}',
+        ajax: '{!! route("admin.bookings.list") !!}',
         columns:[
             {data: 'actions', name: 'actions', orderable: false, searchable: false},
-            {data: 'diary_code', name: 'diary_code'},
-            {data: 'title', name: 'title'},
+            {data: 'booking_code', name: ' booking_code'},
+            {data: 'status', name: 'status'},
+            {data: 'user', name: 'user'},
+            {data: 'staff', name: 'staff'},
+            {data: 'start_time', name: 'start_time'},
+            {data: 'end_time', name: 'end_time'},
             {data: 'created_at',  name: 'created_at'},
-            {data:'updated_at', name: 'updated_at'}
+            {data:'updated_at', name: 'updated_at'},
+
     ]
     });
-
-
-
-
-
-
 });
 
 
-function deleteDiary(id, code){
+function deleteBooking(id, title){
 Swal.fire({
 title: 'Are you sure?',
-html: "You won't be able to revert this!<br /> <span class='text-danger'><b>Delete Diary : "+code+"</b></span>",
+html: "You won't be able to revert this!<br /> <span class='text-danger'><b>Delete  Appointment : "+title+"</b></span>",
 icon: 'warning',
 showCancelButton: true,
 confirmButtonColor: '#3085d6',
@@ -94,7 +99,53 @@ confirmButtonText: 'Yes, delete it!'
 }).then((result) => {
 if (result.isConfirmed) {
 $.ajax({
-url: "/diary/delete/" + id,
+url: "/admin/bookings/" + id,
+method:'DELETE',
+dataType:"json",
+headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+success:function(data)
+{
+if(data.errors) {
+Swal.fire({
+icon: 'error',
+title: 'Oops...',
+text: 'Something went wrong!<br />'+data.errors,
+footer: '<a href="#">Why do I have this issue?, Contact the admin</a>'
+})
+}
+
+if(data.success){
+$('#myTable').DataTable().ajax.reload();
+Swal.fire({
+position: 'top-end',
+icon: 'success',
+title: ""+data.success,
+showConfirmButton: false,
+toast: true,
+timer: 6000
+});
+}
+
+}
+});
+
+}
+})
+}
+
+function cancelBooking(id, title){
+Swal.fire({
+title: 'Are you sure?',
+html: "Cancel the appointment!<br /> <span class='text-danger'><b>Cancel  Appointment : "+title+"</b></span>",
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Yes, Cancel it!'
+}).then((result) => {
+if (result.isConfirmed) {
+$.ajax({
+url: "/admin/bookings/cancel/" + id,
 method:'POST',
 dataType:"json",
 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

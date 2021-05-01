@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DealBookRequest extends FormRequest
+class BookingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,13 @@ class DealBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'category' => 'required',
-            'author' => 'required|max:100',
-            'title' => 'required|min:3|max:255',
-            'content' => 'required',
-            'cover_image' => 'required|mimes:png,jpg,jpeg',
+            'user' => ['required',],
+            'status' => ['required',],
+            'started_time' => ['required',],
+            'ended_time' => ['required',],
+            'user_comment' => ['required',],
+            'staff_comment' => ['required',],
+            'come_into_office' => ['required',],
         ];
     }
 }
